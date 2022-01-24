@@ -1,6 +1,3 @@
-from enum import Enum
-
-
 class AspectRatio:
     __slots__ = ["width", "height", "ratio"]
     width: int
@@ -25,6 +22,6 @@ class ScreenDimension:
         self.corrected_height = height - menubar_height
 
 
-class Screen(Enum):
-    MacBookPro_16_2021_BigSur: ScreenDimension(width=3456, height=2234, menubar_height=74)
-    MacBookPro_14_2021_BigSur: ScreenDimension(width=3024, height=1964, menubar_height=74)
+class Screen:
+    MacBookPro_16_2021_BigSur = ScreenDimension(width=3456, height=2234, menubar_height=74)
+    MacBookPro_14_2021_BigSur = ScreenDimension(width=3024, height=1964, menubar_height=74)

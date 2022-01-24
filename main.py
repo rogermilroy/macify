@@ -1,10 +1,10 @@
 import os
-from pathlib import Path
+import sys
 
 import cv2
 import numpy as np
 
-from screens import AspectRatio, Screen
+from screens import AspectRatio, Screen, ScreenDimension
 
 
 def get_screen_scale_factor(image_res, screen_res) -> float:
@@ -38,13 +38,13 @@ def crop_to_aspect_ratio(image: np.ndarray, aspect_ratio: AspectRatio):
     return image
 
 
-def add_black_top_bar(image: np.ndarray, screen: Screen):
+def add_black_top_bar(image: np.ndarray, screen: ScreenDimension):
     # add black pixels to top.
     # calculate ratio to retina res then apply menu_height x res ratio.
     height = image.shape[0]
     top_bar_height = round(
-        screen.menu_height
-        * get_screen_scale_factor(image_res=height, screen_res=screen.corrrected_height)
+        screen.menubar_height
+        * get_screen_scale_factor(image_res=height, screen_res=screen.corrected_height)
     )
     top_bar_dims = [top_bar_height, *image.shape[1:]]
 
@@ -57,7 +57,7 @@ def change_directory(
     source_dir,
     sink_dir=None,
     aspect_ratio: AspectRatio = AspectRatio(width=16, height=10),
-    screen: Screen = Screen.MacBookPro_14_2021_BigSur,
+    screen: ScreenDimension = Screen.MacBookPro_16_2021_BigSur,
 ) -> None:
     """
     Method to convert all images in a directory to be 16:10 aspect ratio (by default) and adds a black bar to hide
@@ -76,8 +76,9 @@ def change_directory(
 
 
 if __name__ == "__main__":
-    # converts pictures in the ~/Pictures/Desktop Backgrounds folder for a MacBook Pro 16" screen running MacOS BigSur
+    # converts pictures in the first argument folder for a MacBook Pro 16" screen running MacOS BigSur
+    # and stores in the second argument TODO make a better CLI for this.
     change_directory(
-        source_dir=os.path.join(Path.home(), "Pictures/Desktop Backgrounds"),
-        sink_dir=os.path.join(Path.home(), "Pictures/Desktop Backgrounds"),
+        source_dir=os.path.join(sys.argv[1]),
+        sink_dir=os.path.join(sys.argv[2]),
     )
